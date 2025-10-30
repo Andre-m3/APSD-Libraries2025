@@ -2,7 +2,7 @@
 
 Questo repository contiene una libreria di strutture dati sviluppate in Java, come parte dell'assignment per il corso di **Analisi e Progettazione di Strutture Dati (APSD)**.
 
-## 🎯 Scopo del Progetto
+### 🎯 Scopo del Progetto
 
 L'obiettivo di questo progetto è implementare una libreria di strutture dati, sia statiche che dinamiche, per la gestione di vettori, liste, stack, code, insiemi ordinati e non ordinati di dati generici. Le interfacce definiscono i "contratti" che le implementazioni concrete delle strutture dati (come liste, code, etc.) dovranno rispettare.
 
