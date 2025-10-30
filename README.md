@@ -1,12 +1,10 @@
-# Librerie per il corso di APSD
+# APSD - Librerie 2025
 
-Questo repository contiene una collezione di interfacce Java per la definizione di strutture dati, sviluppate come parte dell'assignment per il corso di **Algoritmi e Programmazione Strutturata e a Oggetti (APSD)**.
+Questo repository contiene una libreria di strutture dati sviluppate in Java, come parte dell'assignment per il corso di **Analisi e Progettazione di Strutture Dati (APSD)**.
 
 ## 🎯 Scopo del Progetto
 
-L'obiettivo di questo progetto è fornire un'architettura robusta e flessibile di interfacce per la creazione di diverse tipologie di contenitori di dati. Le interfacce definiscono i contratti che le implementazioni concrete delle strutture dati (come liste, code, pile, etc.) dovranno rispettare.
-
-Il design segue le specifiche fornite dal docente, promuovendo principi di programmazione a oggetti come l'ereditarietà e il polimorfismo.
+L'obiettivo di questo progetto è implementare una libreria di strutture dati, sia statiche che dinamiche, per la gestione di vettori, liste, stack, code, insiemi ordinati e non ordinati di dati generici. Le interfacce definiscono i "contratti" che le implementazioni concrete delle strutture dati (come liste, code, etc.) dovranno rispettare.
 
 ## 🏗️ Struttura delle Librerie
 
@@ -16,22 +14,17 @@ Le librerie sono organizzate gerarchicamente per separare i diversi livelli di a
 - **`interfaces.containers.base`**: Contiene le interfacce fondamentali per tutti i contenitori, come `Container`, `InsertableContainer`, `RemovableContainer`, e `ClearableContainer`.
 - **`interfaces.containers.sequences`**: Specializza i contenitori per strutture dati sequenziali, definendo operazioni basate sulla posizione come `InsertableAtSequence` e `RemovableAtSequence`.
 
-## 🧪 Come Testare
+## 🧪 Fase di Testing
 
-Il file `Main.java` contiene il punto di ingresso del programma. Per testare le implementazioni delle strutture dati che utilizzano queste interfacce, è possibile aggiungere il proprio codice di test all'interno del metodo `main`.
+Per testare le implementazioni delle strutture dati implementate, è stato fornito dal docente un 'simpletest' di base ready-to-use. È data la possibilità di integrare ultreriori test personalizzati.
 
-```java
-public class Main {
-  static public void main(String[] args) {
-    System.out.println("APSD Libraries 2025!");
+## 💻 Utilizzo della Powershell
 
-    // Aggiungere test personali qui!
-  }
-}
-```
+Il progetto è stato pensato per essere progettato, sviluppato e testato su ambienti Linux. Nonostante ciò, il docente ha fornito uno script utilizzabile tramite Powershell per rendere il 'makefile' runnable anche su sistemi operativi Windows, con tutte le relative funzioni implementate e funzionanti. Ambienti di sviluppo come vscode permettono l'utilizzo della Powershell tramite terminale interno.
+
 
 ## 👨‍💻 Autore
 
-*   **Nome:** Antonio Andrea Montella
+*   **Nominativo:** Antonio Andrea Montella
 *   **Matricola:** N86005652
 *   **Ateneo:** Università degli Studi di Napoli Federico II
