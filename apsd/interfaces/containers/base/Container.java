@@ -1,10 +1,12 @@
 package apsd.interfaces.containers.base;
 
+// import apsd.classes.utilities.Natural;
+
 /** Interface: Container, la base di tutti i contenitori. */
 public interface Container {
 
-  long size();
+  // long size();
 
-  boolean isEmpty();
+  // boolean isEmpty();
 
 }
