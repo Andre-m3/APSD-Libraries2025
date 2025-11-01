@@ -19,12 +19,12 @@ Le librerie sono organizzate gerarchicamente per separare i diversi livelli di a
 
 ## 🧪 Fase di Testing
 
-Per testare le implementazioni delle strutture dati implementate, è stato fornito dal docente un 'simpletest' di base ready-to-use. È data la possibilità di integrare ultreriori test personalizzati.
+Per testare le implementazioni delle strutture dati, è stato fornito dal docente un 'simpletest' di base ready-to-use. È data la possibilità di integrare ultreriori test personalizzati.
 
 
 ## 💻 Utilizzo della Powershell
 
-Il progetto è stato pensato per essere progettato, sviluppato e testato su ambienti Linux. Nonostante ciò, il docente ha fornito uno script utilizzabile tramite Powershell per rendere il 'makefile' runnable anche su sistemi operativi Windows, con tutte le relative funzioni implementate e funzionanti. Ambienti di sviluppo come vscode permettono l'utilizzo della Powershell tramite terminale interno.
+Il progetto è stato pensato per essere sviluppato e testato su ambienti Linux. Nonostante ciò, il docente ha fornito uno script utilizzabile tramite Powershell per rendere il 'makefile' runnable anche su sistemi operativi Windows, con tutte le relative funzioni implementate e funzionanti. Ambienti di sviluppo come vscode permettono l'utilizzo della Powershell tramite terminale interno.
 
 
 ## 👨‍💻 Autore
