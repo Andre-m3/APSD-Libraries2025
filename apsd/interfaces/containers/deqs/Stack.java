@@ -1,10 +1,10 @@
 package apsd.interfaces.containers.deqs;
 
-// import apsd.interfaces.containers.base.ClearableContainer;
-// import apsd.interfaces.containers.base.InsertableContainer;
+import apsd.interfaces.containers.base.ClearableContainer;
+import apsd.interfaces.containers.base.InsertableContainer;
 
-public interface Stack<Data> { // Must extend ClearableContainer and InsertableContainer
-
+public interface Stack<Data> extends ClearableContainer, InsertableContainer<Data> {
+  
   // Top
   // Pop
   // TopNPop

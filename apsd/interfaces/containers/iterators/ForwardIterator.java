@@ -4,7 +4,7 @@ package apsd.interfaces.containers.iterators;
 // import apsd.interfaces.traits.Predicate;
 
 /** Interface: Iteratore in avanti. */
-public interface ForwardIterator<Data> { // Must extend Iterator
+public interface ForwardIterator<Data> extends Iterator<Data> {
 
   // Next
 
