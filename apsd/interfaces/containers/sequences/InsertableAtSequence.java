@@ -11,7 +11,7 @@ public interface InsertableAtSequence<Data> extends Sequence<Data> {
   // InsertFirst
   default void InsertFirst(final Data value) { InsertAt(value, Natural.ZERO); }
 
-  // InsertLast
+  // InsertLast              //* ******* size()-nat.one? ******* *//
   default void InsertLast(final Data value) { InsertAt(value, Size()); }
 
 }

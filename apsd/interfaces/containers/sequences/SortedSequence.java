@@ -12,12 +12,17 @@ public interface SortedSequence<Data extends Comparable<? super Data>> extends S
   /* Override specific member functions from MembershipContainer              */
   /* ************************************************************************ */
 
-  // ...
+  // @Override
+  // Exists... (metodo blu)
 
   /* ************************************************************************ */
   /* Override specific member functions from Sequence                         */
   /* ************************************************************************ */
 
-  // ...
+  // @Override
+  // Se la Sequence è Sorted a priori, allora sappiamo gestire tutto meglio!
+  //  GetAt.... In posizione "..." dammi Data. (corretto oppure no?)
+  //  Search... (metodo blu)
+  //    -> Trovare un dato specifico in una sequenza ordinata è più facile!
 
 }
