@@ -35,6 +35,10 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable{
   /* Override specific member functions from ClearableContainer               */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  default void Clear() { Realloc(Natural.ZERO); }
+  /* Come consigliato a lezione, per svuotare un contenitore svuotabile
+   * lo riallochiamo passando come Naturale zero!
+   */
 
 }
