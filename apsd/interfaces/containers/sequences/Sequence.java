@@ -14,16 +14,12 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
   // GetFirst
   // GetLast
   default Data GetFirst() {
-    if (IsEmpty()) {
-      return null;
-    }
+    if (IsEmpty()) { return null; }
     return GetAt(Natural.ZERO);
   }
   
   default Data GetLast() {
-    if (IsEmpty()) {
-      return null;
-    }
+    if (IsEmpty()) { return null; }
     return GetAt(Size().Decrement());
   }
 

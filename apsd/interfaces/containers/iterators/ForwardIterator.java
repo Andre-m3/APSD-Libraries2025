@@ -7,7 +7,8 @@ import apsd.interfaces.traits.Predicate;
 public interface ForwardIterator<Data> extends Iterator<Data> {
 
   // Next
-  void Next();
+  default void Next() { Next(Natural.ONE); }
+  
   void Next(final Natural num);
 
   // DataNNext
