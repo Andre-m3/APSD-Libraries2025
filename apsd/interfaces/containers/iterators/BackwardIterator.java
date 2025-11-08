@@ -7,12 +7,15 @@ import apsd.interfaces.traits.Predicate;
 public interface BackwardIterator<Data> extends Iterator<Data> {
 
   // Prev
-  default void Prev() { Prev(Natural.ONE); }
-  
-  void Prev(final Natural num);
+  default void Prev() { DataNPrev(); }
+
+  default void Prev(final Natural num) {
+    long count = num.ToLong();
+    for (long i = 0; i < count && IsValid(); ++i) { Prev(); }
+  }
   
   // DataNPrev
-  Data DataNPrev();
+  abstract Data DataNPrev();
 
   // ForEachBackward
   default boolean ForEachBackward(final Predicate<Data> fun) {

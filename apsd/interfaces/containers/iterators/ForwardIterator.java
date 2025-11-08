@@ -7,12 +7,17 @@ import apsd.interfaces.traits.Predicate;
 public interface ForwardIterator<Data> extends Iterator<Data> {
 
   // Next
-  default void Next() { Next(Natural.ONE); }
-  
-  void Next(final Natural num);
+  default void Next() { DataNNext(); }
+
+  default void Next(final Natural num) {
+    long count = num.ToLong();
+    for (long i = 0; i < count && IsValid(); ++i) {
+      Next();
+    }
+  }
 
   // DataNNext
-  Data DataNNext();
+  abstract Data DataNNext();
 
   // ForEachForward
   default boolean ForEachForward(Predicate<Data> fun) {
