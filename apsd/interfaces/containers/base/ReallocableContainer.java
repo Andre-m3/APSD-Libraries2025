@@ -29,7 +29,9 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable{
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  // ...
+  /* Qui size() e capacity() sono ancora uguali */
+  @Override
+  default Natural Size() { return Capacity(); }
 
   /* ************************************************************************ */
   /* Override specific member functions from ClearableContainer               */

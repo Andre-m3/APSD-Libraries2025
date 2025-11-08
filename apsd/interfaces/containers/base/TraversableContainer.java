@@ -3,6 +3,7 @@ package apsd.interfaces.containers.base;
 // import apsd.classes.utilities.Natural;
 // import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Box;
+import apsd.classes.utilities.Natural;
 import apsd.interfaces.traits.Accumulator;
 import apsd.interfaces.traits.Predicate;
 
@@ -31,7 +32,8 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> {
   /* Override specific member functions from Container                        */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  abstract Natural Size();
 
   /* ************************************************************************ */
   /* Override specific member functions from MembershipContainer              */
@@ -39,10 +41,10 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> {
 
   @Override
   default boolean Exists(final Data val) {
-    // Usiamo TraverseForward per cercare l'elemento. Se lo troviamo, il predicato
-    // restituisce false, TraverseForward si ferma e restituisce false.
-    // Quindi, se TraverseForward restituisce false, l'elemento esiste.
-    return !TraverseForward(dat -> !dat.equals(val));
+    // La TraverseForward scorre tutti gli elementi.
+    // Se trova l'elemento val, il predicato restituisce 'true'
+    // Di conseguenza la traverse si interrompe. 
+    return TraverseForward(dat -> dat.equals(val));
   }
 
 }
