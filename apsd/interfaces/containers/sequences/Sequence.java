@@ -6,7 +6,7 @@ import apsd.interfaces.containers.base.IterableContainer;
 import apsd.interfaces.containers.iterators.ForwardIterator;
 
 /** Interface: IterableContainer con supporto alla lettura e ricerca tramite posizione. */
-public interface Sequence<Data> extends IterableContainer<Data> { // Must extend IterableContainer
+public interface Sequence<Data> extends IterableContainer<Data> {
 
   // GetAt
   default Data GetAt(final Natural index) {
@@ -24,7 +24,7 @@ public interface Sequence<Data> extends IterableContainer<Data> { // Must extend
   // GetLast
   default Data GetLast() {
     if (IsEmpty()) { return null; }
-    return GetAt(Size().Decrement());   // Nota -> Cosi non decrementiamo size?
+    return GetAt(Size().Decrement());
   }
 
   // Search

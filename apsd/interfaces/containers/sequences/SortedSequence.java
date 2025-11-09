@@ -23,31 +23,20 @@ public interface SortedSequence<Data extends Comparable<? super Data>> extends S
 
   @Override
   default Natural Search(final Data val) {
-    if (val == null) { return null; }
-
     long left = 0;
     long right = Size().ToLong() - 1;
 
     while (left <= right) {
       long mid = left + (right - left) / 2;
       Data midVal = GetAt(Natural.Of(mid));
-      int cmp = midVal.compareTo(val);
+      int cmp = midVal.compareTo(val); 
+      // Come spiegato a lezione, cmp==0 significa che sono uguali!
 
-      if (cmp < 0) {
-        left = mid + 1; // Cerca nella metà destra
-      } else if (cmp > 0) {
-        right = mid - 1; // Cerca nella metà sinistra
-      } else {
-        return Natural.Of(mid); // Trovato!
-      }
+      if (cmp < 0) left = mid + 1;        // Cerca nella metà destra
+      else if (cmp > 0) right = mid - 1;  // Cerca nella metà sinistra
+      else return Natural.Of(mid);        // Trovato!
     }
-    return null; // Non trovato
+
+    return null; // Elemento non presente
   }
-
-  // @Override
-  // Se la Sequence è Sorted a priori, allora sappiamo gestire tutto meglio!
-  //  GetAt.... In posizione "..." dammi Data. (corretto oppure no?)
-  //  Search... (metodo blu)
-  //    -> Trovare un dato specifico in una sequenza ordinata è più facile!
-
 }
