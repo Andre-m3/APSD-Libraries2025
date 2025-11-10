@@ -25,12 +25,15 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
     }
   }
 
+  // ShiftLeft (overload con Natural.ONE)
+  default void ShiftLeft(Natural pos) { ShiftLeft(pos, Natural.ONE); }
+
   // ShiftFirstLeft
-  default void ShiftFirstLeft() { ShiftLeft(Natural.ZERO, Natural.ONE); }
+  default void ShiftFirstLeft() { ShiftLeft(Natural.ZERO); }
 
   // ShiftLastLeft
   default void ShiftLastLeft() {
-    if (!IsEmpty()) { ShiftLeft(Size().Decrement(), Natural.ONE); }
+    if (!IsEmpty()) { ShiftLeft(Size().Decrement()); }
   }
 
   // ShiftRight
@@ -52,13 +55,16 @@ public interface Vector<Data> extends ReallocableContainer, MutableSequence<Data
       }
     }
   }
+  
+  // ShiftRight (overload per un solo elemento)
+  default void ShiftRight(Natural pos) { ShiftRight(pos, Natural.ONE); }
 
   // ShiftFirstRight
-  default void ShiftFirstRight() { ShiftRight(Natural.ZERO, Natural.ONE); }
+  default void ShiftFirstRight() { ShiftRight(Natural.ZERO); }
   
   // ShiftLastRight
   default void ShiftLastRight() {
-    if (!IsEmpty()) { ShiftRight(Size().Decrement(), Natural.ONE); }
+    if (!IsEmpty()) { ShiftRight(Size().Decrement()); }
   }
   
   // SubVector -> Sfruttiamo la SubSequence (stesso concetto)

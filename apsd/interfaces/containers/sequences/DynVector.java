@@ -8,12 +8,14 @@ public interface DynVector<Data> extends Vector<Data>, InsertableAtSequence<Data
   /* ************************************************************************ */
   /* Override specific member functions from InsertableAtSequence             */
   /* ************************************************************************ */
-
+  
   @Override
   default void InsertAt(final Data val, final Natural pos) {
-    ShiftRight(pos, Natural.ONE);
+    if (pos == Size()) { Expand(Natural.ONE); }
+    else { ShiftRight(pos); } // Overloaded method of super (Vector)
     SetAt(val, pos);
   }
+  
 
   /* ************************************************************************ */
   /* Override specific member functions from RemovableAtSequence              */
@@ -21,9 +23,9 @@ public interface DynVector<Data> extends Vector<Data>, InsertableAtSequence<Data
 
   @Override
   default Data AtNRemove(final Natural pos) {
-    Data toRemove = GetAt(pos);
-    ShiftLeft(pos, Natural.ONE);
-    return toRemove;
+    Data val = GetAt(pos);
+    ShiftLeft(pos); // Overloaded method of super (Vector)
+    return val;
   }
 
   /* ************************************************************************ */
