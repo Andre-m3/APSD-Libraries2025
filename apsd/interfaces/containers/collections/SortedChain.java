@@ -9,40 +9,40 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   default Natural SearchPredecessor(final Data val) {
     long left = 0;
     long right = Size().ToLong() - 1;
-    Natural predIndex = null;
+    long pred = -1;
 
     while (left <= right) {
       long mid = left + (right - left) / 2;
       int cmp = GetAt(Natural.Of(mid)).compareTo(val);
 
       if (cmp < 0) { // midVal è un potenziale predecessore
-        predIndex = Natural.Of(mid);
+        pred = mid;
         left = mid + 1; // Cerco un predecessore ancora più grande a destra
       } else { // midVal è >= val, quindi il predecessore deve essere a sinistra
         right = mid - 1; // Cerco nella metà sinistra
       }
     }
-    return predIndex;
+    return (pred > -1) ? Natural.Of(pred) : null;
   }
 
   // SearchSuccessor
   default Natural SearchSuccessor(final Data val) {
     long left = 0;
     long right = Size().ToLong() - 1;
-    Natural succIndex = null;
+    long succ = -1;
 
     while (left <= right) {
       long mid = left + (right - left) / 2;
       int cmp = GetAt(Natural.Of(mid)).compareTo(val);
 
       if (cmp > 0) { // midVal è un potenziale successore
-        succIndex = Natural.Of(mid);
+        succ = mid;
         right = mid - 1; // Cerco un successore ancora più piccolo a sinistra
       } else { // midVal è <= val, quindi il successore deve essere a destra
         left = mid + 1; // Cerco nella metà destra
       }
     }
-    return succIndex;
+    return (succ > -1) ? Natural.Of(succ) : null;
   }
   
   /* ************************************************************************ */
@@ -60,10 +60,10 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   /* ************************************************************************ */
 
   // Intersection -> fornita dal template
-  default void Intersection(SortedChain<Data> chn) {
+  default void Intersection(SortedChain<Data> chain) {
     Natural i = Natural.ZERO, j = Natural.ZERO;
-    while (i.compareTo(Size()) < 0 && j.compareTo(chn.Size()) < 0) {
-      int cmp = GetAt(i).compareTo(chn.GetAt(j));
+    while (i.compareTo(Size()) < 0 && j.compareTo(chain.Size()) < 0) {
+      int cmp = GetAt(i).compareTo(chain.GetAt(j));
       if (cmp < 0) { RemoveAt(i); }
       else {
         j = j.Increment();
@@ -117,7 +117,7 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   @Override
   default Data MinNRemove() {
     if (IsEmpty()) { return null; }
-    Data min = GetAt(Natural.ZERO); // O(1)
+    Data min = GetAt(Natural.ZERO);
     RemoveAt(Natural.ZERO);
     return min;
   }
@@ -126,7 +126,7 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   @Override
   default Data MaxNRemove() {
     if (IsEmpty()) { return null; }
-    Data max = GetAt(Size().Decrement()); // O(1)
+    Data max = GetAt(Size().Decrement());
     RemoveAt(Size().Decrement());
     return max;
   }
@@ -150,7 +150,7 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   default Data PredecessorNRemove(final Data val) {
     Natural predIndex = SearchPredecessor(val);
     if (predIndex == null) { return null; }
-    Data pred = GetAt(predIndex); // O(1)
+    Data pred = GetAt(predIndex);
     RemoveAt(predIndex);
     return pred;
   }
@@ -160,7 +160,7 @@ public interface SortedChain<Data extends Comparable<? super Data>> extends Orde
   default Data SuccessorNRemove(final Data val) {
     Natural succIndex = SearchSuccessor(val);
     if (succIndex == null) { return null; }
-    Data succ = GetAt(succIndex); // O(1)
+    Data succ = GetAt(succIndex);
     RemoveAt(succIndex);
     return succ;
   }
