@@ -19,10 +19,13 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
     if (this == other) { return true; } // Se "il contenitore" è lo stesso, allora sono uguali.
     if (this.IsEmpty()) { return true; } // Se entrambi sono vuoti (secondo if), allora sono uguali.
 
+    ForwardIterator<Data> thisIter = this.FIterator();
     ForwardIterator<Data> otherIter = other.FIterator();
-    // Usiamo TraverseForward su 'this' e l'iteratore di 'other' per il confronto.
-    // Il predicato si ferma e restituisce 'false' alla prima discrepanza. 'true' se tutto termina senza interrompersi
-    return this.TraverseForward(dat -> dat.equals(otherIter.DataNNext()));
+    
+    while(thisIter.IsValid() && otherIter.IsValid())
+      if (!thisIter.DataNNext().equals(otherIter.DataNNext())) { return false; }
+
+    return !thisIter.IsValid() && !otherIter.IsValid(); // Entrambi devono essere terminati
   }
 
   /* ************************************************************************ */

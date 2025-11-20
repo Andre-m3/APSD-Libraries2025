@@ -2,13 +2,18 @@ package apsd.interfaces.containers.sequences;
 
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.containers.base.MutableIterableContainer;
-// import apsd.interfaces.containers.iterators.MutableForwardIterator;
+import apsd.interfaces.containers.iterators.MutableForwardIterator;
 
 /** Interface: Sequence & MutableIterableContainer con supporto alla scrittura tramite posizione. */
 public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableContainer<Data> {
 
   // SetAt
-  void SetAt(final Data value, final Natural index);
+  default void SetAt(Data value, Natural pos) {
+    ExcIfOutOfBound(pos); // Lanciamo l'eccezione se pos non è valido
+    MutableForwardIterator<Data> iter = FIterator(); 
+    iter.Next(pos);
+    iter.SetCurrent(value);
+  }
   
   // GetNSetAt
   default Data GetNSetAt(final Data value, final Natural index) {
@@ -34,10 +39,10 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   }
 
   // Swap
-  default void Swap(final Natural index1, final Natural index2) {
-    Data tmp = GetAt(index1);
-    SetAt(GetAt(index2), index1);
-    SetAt(tmp, index2);
+  default void Swap(final Natural pos1, final Natural pos2) {
+    Data tmp = GetAt(pos1);
+    SetAt(GetAt(pos2), pos1);
+    SetAt(tmp, pos2);
   }
   
   /* ************************************************************************ */

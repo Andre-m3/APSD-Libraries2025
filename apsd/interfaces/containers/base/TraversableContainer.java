@@ -1,8 +1,7 @@
 package apsd.interfaces.containers.base;
 
-// import apsd.classes.utilities.Natural;
-// import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Box;
+import apsd.classes.utilities.MutableNatural;
 import apsd.classes.utilities.Natural;
 import apsd.interfaces.traits.Accumulator;
 import apsd.interfaces.traits.Predicate;
@@ -33,7 +32,15 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> {
   /* ************************************************************************ */
 
   @Override
-  abstract Natural Size();
+  default Natural Size() {
+    /* Su un TraversableContainer si può calcolare la size!
+     * TraverseForward è "costantemente" efficiente.
+     * Non ci sono casi che possono causare peggioramenti, come per Backward...
+     */
+    final MutableNatural size = new MutableNatural(0L);
+    TraverseForward(dat -> { size.Increment(); return false; });
+    return size.ToNatural();
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from MembershipContainer              */

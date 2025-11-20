@@ -11,7 +11,9 @@ public interface BackwardIterator<Data> extends Iterator<Data> {
 
   default void Prev(final Natural num) {
     long count = num.ToLong();
-    for (long i = 0; i < count && IsValid(); ++i) { Prev(); }
+    for (long i = 0; i < count && IsValid(); i++) {
+      Prev();
+    }
   }
   
   // DataNPrev

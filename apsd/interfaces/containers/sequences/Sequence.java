@@ -11,7 +11,8 @@ public interface Sequence<Data> extends IterableContainer<Data> {
   // GetAt
   default Data GetAt(final Natural index) {
     ExcIfOutOfBound(index); // index OutOfBound check
-    ForwardIterator<Data> iter = FIterator(); iter.Next(index);
+    ForwardIterator<Data> iter = FIterator();
+    iter.Next(index);
     return iter.GetCurrent();
   }
 

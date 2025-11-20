@@ -11,7 +11,7 @@ public interface ForwardIterator<Data> extends Iterator<Data> {
 
   default void Next(final Natural num) {
     long count = num.ToLong();
-    for (long i = 0; i < count && IsValid(); ++i) {
+    for (long i = 0; i < count && IsValid(); i++) {
       Next();
     }
   }
