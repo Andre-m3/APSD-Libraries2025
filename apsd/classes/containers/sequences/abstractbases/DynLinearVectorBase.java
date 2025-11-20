@@ -11,8 +11,8 @@ abstract public class DynLinearVectorBase<Data> extends LinearVectorBase<Data> i
 
   public DynLinearVectorBase() {}
 
-  public DynLinearVectorBase(Natural inicapacity) {
-    super(inicapacity); // Alloca l'array con la capacità iniziale
+  public DynLinearVectorBase(Natural inisize) {
+    super(inisize); // Alloca l'array con la capacità iniziale
   }
 
   public DynLinearVectorBase(TraversableContainer<Data> con) {

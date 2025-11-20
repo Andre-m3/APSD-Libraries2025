@@ -16,6 +16,10 @@ public interface ForwardIterator<Data> extends Iterator<Data> {
     }
   }
 
+  default void Next(final long num) {
+    Next(Natural.Of(num));
+  }
+
   // DataNNext
   abstract Data DataNNext();
 

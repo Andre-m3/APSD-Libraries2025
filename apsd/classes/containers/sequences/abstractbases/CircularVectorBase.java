@@ -41,7 +41,7 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     if (ns >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
 
     Data[] newArr = (Data[]) new Object[(int) ns];
-    long limit = Math.min(Size().ToLong(), ns);
+    long limit = Math.min(Capacity().ToLong(), ns);
 
     for (long i = 0; i < limit; i++) {
       newArr[(int) i] = GetAt(Natural.Of(i));

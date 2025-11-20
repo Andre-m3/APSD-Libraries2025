@@ -16,6 +16,10 @@ public interface BackwardIterator<Data> extends Iterator<Data> {
     }
   }
   
+  default void Prev(final long num) {
+    Prev(Natural.Of(num));
+  }
+
   // DataNPrev
   abstract Data DataNPrev();
 
