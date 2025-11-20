@@ -2,12 +2,21 @@ package apsd.interfaces.containers.collections;
 
 public interface OrderedSet<Data extends Comparable<? super Data>> extends Set<Data> {
 
-  // Min
+  /* Min (versione alternativa)
   default Data Min() {
     if (IsEmpty()) { return null; }
     // FoldForward parte dal primo elemento e lo confronta con tutti gli altri.
     // L'accumulatore mantiene il minimo corrente.
     return FoldForward((dat, min) -> (min == null || dat.compareTo(min) < 0) ? dat : min, FIterator().GetCurrent());
+  }*/
+
+  // Min (versione "migliorata")
+  default Data Min() {
+    if (IsEmpty()) return null;
+    return FoldForward((dat, min) -> {
+      if (min == null) return dat;
+      return (dat.compareTo(min) < 0) ? dat : min;
+    }, null);
   }
 
   // RemoveMin
@@ -17,13 +26,22 @@ public interface OrderedSet<Data extends Comparable<? super Data>> extends Set<D
   default Data MinNRemove() {
     Data min = Min();
     if (min != null) { Remove(min); }
-    return min;
+    return min; // se min null -> non si cancella niente -> restituisce null
   }
 
-  // Max
+  /* Max (versione alternativa)
   default Data Max() {
     if (IsEmpty()) { return null; }
     return FoldForward((dat, max) -> (max == null || dat.compareTo(max) > 0) ? dat : max, FIterator().GetCurrent());
+  } */
+
+  // Max (versione "migliorata")
+  default Data Max() {
+    if (IsEmpty()) return null;
+    return FoldForward((dat, max) -> {
+      if (max == null) return dat;
+      return (dat.compareTo(max) > 0) ? dat : max;
+    }, null);
   }
 
   // RemoveMax

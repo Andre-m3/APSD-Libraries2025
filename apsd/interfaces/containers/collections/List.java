@@ -6,9 +6,9 @@ import apsd.interfaces.containers.sequences.MutableSequence;
 
 public interface List<Data> extends Chain<Data>, InsertableAtSequence<Data>, MutableSequence<Data> { // Must extend MutableSequence, InsertableAtSequence, and Chain
   
-  List<Data> SubList(final Natural from, final Natural to);
-  // NOTA: devo differenziare SubList e SubChain dalle "SubSequence"? Solo firma (abstract) o cast (default)?
-  //       dopo dovrà essere reimplementata in ogni caso dalla classe concreta...
+  default List<Data> SubList(final Natural from, final Natural to) {
+    return (List<Data>) SubSequence(from, to);
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from ExtensibleContainer              */

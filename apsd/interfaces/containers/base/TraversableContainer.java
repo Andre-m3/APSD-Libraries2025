@@ -51,7 +51,7 @@ public interface TraversableContainer<Data> extends MembershipContainer<Data> {
     // La TraverseForward scorre tutti gli elementi.
     // Se trova l'elemento val, il predicato restituisce 'true'
     // Di conseguenza la traverse si interrompe. 
-    return TraverseForward(dat -> dat.equals(val));
+    return TraverseForward(dat -> { if (dat == null) return (val == null); else return dat.equals(val); });
   }
 
 }

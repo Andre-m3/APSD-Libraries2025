@@ -12,15 +12,21 @@ public interface Chain<Data> extends RemovableAtSequence<Data>, Set<Data> { // M
   }
 
   // RemoveOccurrences
-  default void RemoveOccurrences(final Data val) {
-    // Richiamo il metodo Filter ereditato da Collection.
-    // Filter rimuove gli elementi per i quali il predicato restituisce 'false'.
-    // Vengono rimossi tutti gli elementi per cui `dat.equals(val)` è vero.
-    Filter(dat -> !dat.equals(val));
+  default void RemoveOccurrences(Data val) {
+    Natural i = Natural.ZERO;
+    while (i.compareTo(Size()) < 0) {
+      Data curr = GetAt(i);
+      
+      // Match Sicuro. Se curr è null, viene rimosso solo se anche val è null (improbabile/impossibile?).
+      boolean match = (curr == null) ? (val == null) : curr.equals(val);
+      
+      if (match) RemoveAt(i); // 'i' non incrementa perché l'elemento successivo è scivolato nella posizione corrente
+      else i = i.Increment(); // Passiamo al prossimo solo se non abbiamo rimosso
+    }
   }
   
   // SubChain
-  default Chain<Data> SubChain(final Natural from, final Natural to) {
+  default Chain<Data> SubChain(final Natural from, final Natural to) {    /////***** SUB CHAIN *****/////
     return (Chain<Data>) SubSequence(from, to);
   }
   
