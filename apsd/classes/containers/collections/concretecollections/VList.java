@@ -1,6 +1,6 @@
 package apsd.classes.containers.collections.concretecollections;
 
-import apsd.interfaces.containers.sequences.DynVector;
+//import apsd.interfaces.containers.sequences.DynVector;
 
 // import apsd.classes.containers.collections.concretecollections.bases.VChainBase;
 // import apsd.classes.utilities.Natural;
