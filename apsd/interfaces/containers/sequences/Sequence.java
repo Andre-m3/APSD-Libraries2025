@@ -18,13 +18,13 @@ public interface Sequence<Data> extends IterableContainer<Data> {
 
   // GetFirst
   default Data GetFirst() {
-    // if (IsEmpty()) { return null; } I test chiedono l'eccezione qui (che avviene in GetAt)
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Sequence is empty");
     return GetAt(Natural.ZERO);
   }
 
   // GetLast
   default Data GetLast() {
-    // if (IsEmpty()) { return null; } Discorso analogo a GetFirst, lanciamo eccezione se IsEmpty
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Sequence is empty");
     return GetAt(Size().Decrement());
   }
 

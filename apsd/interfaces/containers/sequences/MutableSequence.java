@@ -23,7 +23,9 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   }
 
   // SetFirst
-  default void SetFirst(final Data value) { SetAt(value, Natural.ZERO); }
+  default void SetFirst(final Data value) {
+    SetAt(value, Natural.ZERO);
+  }
 
   // GetNSetFirst
   default Data GetNSetFirst(final Data value) {
@@ -31,10 +33,14 @@ public interface MutableSequence<Data> extends Sequence<Data>, MutableIterableCo
   }
 
   // SetLast
-  default void SetLast(final Data value) { SetAt(value, Size().Decrement()); }
+  default void SetLast(final Data value) {
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Sequence is empty");
+    SetAt(value, Size().Decrement());
+  }
 
   // GetNSetLast
   default Data GetNSetLast(final Data value) {
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Sequence is empty");
     return GetNSetAt(value, Size().Decrement());
   }
 

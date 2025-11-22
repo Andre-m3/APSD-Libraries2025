@@ -41,7 +41,7 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     if (ns >= Integer.MAX_VALUE) { throw new ArithmeticException("Overflow: size cannot exceed Integer.MAX_VALUE!"); }
 
     Data[] newArr = (Data[]) new Object[(int) ns];
-    long limit = Math.min(Capacity().ToLong(), ns);
+    long limit = Math.min(Size().ToLong(), ns);
 
     for (long i = 0; i < limit; i++) {
       newArr[(int) i] = GetAt(Natural.Of(i));
@@ -96,11 +96,27 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     }
   }
 
-  @Override
+  /*@Override
   public void ShiftRight(Natural pos, Natural num) {
     if (pos.IsZero()) {
       long capacity = arr.length;
       if (capacity > 0) { start = ((start - num.ToLong()) % capacity + capacity) % capacity; }
+    } else {
+      super.ShiftRight(pos, num);
+    }
+  }*/
+
+  @Override
+  public void ShiftRight(Natural pos, Natural num) {
+    if (pos.IsZero()) {
+      long capacity = arr.length;
+      if (capacity > 0) { 
+        long n = Math.min(num.ToLong(), capacity);
+        start = ((start - n) % capacity + capacity) % capacity; 
+        for(long i = 0; i < n; i++) {
+          SetAt(null, Natural.Of(i));
+        }
+      }
     } else {
       super.ShiftRight(pos, num);
     }

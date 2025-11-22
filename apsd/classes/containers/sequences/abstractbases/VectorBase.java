@@ -43,8 +43,11 @@ abstract public class VectorBase<Data> implements Vector<Data> {
   /* Override specific member functions from ClearableContainer               */
   /* ************************************************************************ */
 
+  /*@Override
+  public void Clear() { ArrayAlloc(Capacity()); }*/
+
   @Override
-  public void Clear() { ArrayAlloc(Capacity()); }
+  public void Clear() { Realloc(Natural.ZERO); }
 
   /* ************************************************************************ */
   /* Override specific member functions from ResizableContainer               */
@@ -63,7 +66,7 @@ abstract public class VectorBase<Data> implements Vector<Data> {
 
     @Override
     public boolean IsValid() {
-      return (curr < Capacity().ToLong());
+      return (curr < Size().ToLong());
     }
 
     @Override
@@ -102,7 +105,7 @@ abstract public class VectorBase<Data> implements Vector<Data> {
     public VectorBIterator() { Reset(); }
 
     @Override
-    public boolean IsValid() { return (curr >= 0L && curr < Capacity().ToLong()); }
+    public boolean IsValid() { return (curr >= 0L && curr < Size().ToLong()); }
 
     @Override
     public void Prev() {
@@ -111,7 +114,7 @@ abstract public class VectorBase<Data> implements Vector<Data> {
     }
 
     @Override
-    public void Reset() { curr = Capacity().ToLong() - 1L; }
+    public void Reset() { curr = Size().ToLong() - 1L; }
 
     @Override
     public Data GetCurrent() {
