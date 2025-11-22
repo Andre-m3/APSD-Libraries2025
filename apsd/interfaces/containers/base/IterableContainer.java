@@ -12,20 +12,31 @@ public interface IterableContainer<Data> extends TraversableContainer<Data> {
   ForwardIterator<Data> FIterator();
   BackwardIterator<Data> BIterator();
 
-  // IsEqual
   default boolean IsEqual(final IterableContainer<Data> other) {
-    if (other == null) { return false; }
-    if (!this.Size().equals(other.Size())) { return false; } // Hanno dimensioni diverse, sono diversi!
-    if (this == other) { return true; } // Se "il contenitore" è lo stesso, allora sono uguali.
-    if (this.IsEmpty()) { return true; } // Se entrambi sono vuoti (secondo if), allora sono uguali.
+    if (other == null) return false;
+    if (this == other) return true;
+    if (!this.Size().equals(other.Size())) return false;
 
-    ForwardIterator<Data> thisIter = this.FIterator();
+    ForwardIterator<Data> thisIter = FIterator();
     ForwardIterator<Data> otherIter = other.FIterator();
-    
-    while(thisIter.IsValid() && otherIter.IsValid())
-      if (!thisIter.DataNNext().equals(otherIter.DataNNext())) { return false; }
 
-    return !thisIter.IsValid() && !otherIter.IsValid(); // Entrambi devono essere terminati
+    while (thisIter.IsValid() && otherIter.IsValid()) {
+      Data val1 = thisIter.GetCurrent();
+      Data val2 = otherIter.GetCurrent();
+    
+      // Gestione dei null per non avere problemi con equals()
+      if (val1 == null) {
+        if (val2 != null) return false;
+      } else if (!val1.equals(val2)) {
+        return false;
+      }
+
+      // Incremento gli iteratori
+      thisIter.Next();
+      otherIter.Next();
+    }
+
+    return !(thisIter.IsValid() || otherIter.IsValid()); // Entrambi devono essere terminati, altrimenti non sono uguali
   }
 
   /* ************************************************************************ */

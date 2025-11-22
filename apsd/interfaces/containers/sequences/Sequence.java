@@ -18,17 +18,17 @@ public interface Sequence<Data> extends IterableContainer<Data> {
 
   // GetFirst
   default Data GetFirst() {
-    if (IsEmpty()) { return null; }
+    // if (IsEmpty()) { return null; } I test chiedono l'eccezione qui (che avviene in GetAt)
     return GetAt(Natural.ZERO);
   }
 
   // GetLast
   default Data GetLast() {
-    if (IsEmpty()) { return null; }
+    // if (IsEmpty()) { return null; } Discorso analogo a GetFirst, lanciamo eccezione se IsEmpty
     return GetAt(Size().Decrement());
   }
 
-  // Search
+  /* Search (senza validare caso null)
   default Natural Search(final Data value) {
     long idx = 0;
     ForwardIterator<Data> iter = FIterator();
@@ -36,6 +36,23 @@ public interface Sequence<Data> extends IterableContainer<Data> {
     while (iter.IsValid()) {
       if (iter.GetCurrent().equals(value)) { return Natural.Of(idx); }
       iter.Next(); idx++;
+    }
+    return null; // Non trovato!
+  }*/
+
+  // Search (con gestione caso null)
+  default Natural Search(final Data value) {
+    long idx = 0;
+    ForwardIterator<Data> iter = FIterator();
+
+    while (iter.IsValid()) {
+            Data currentData = iter.DataNNext(); // Prende il dato e avanza l'iteratore
+      if (value == null) {
+        if (currentData == null) { return Natural.Of(idx); }
+      } else {
+        if (value.equals(currentData)) { return Natural.Of(idx); }
+      }
+      idx++;
     }
     return null; // Non trovato!
   }

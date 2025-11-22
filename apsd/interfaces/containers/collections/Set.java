@@ -23,13 +23,12 @@ public interface Set<Data> extends Collection<Data> {
 
   @Override
   default boolean IsEqual(final IterableContainer<Data> other) {
-    if (other instanceof Set) {
-      if (!Size().equals(other.Size())) {
-        return false;
-      }
-      return TraverseForward(dat -> other.Exists(dat));
+    if (other == null || !(other instanceof Set) || !this.Size().equals(other.Size())) {
+      return false;
     }
-    return false;
+    if (this == other) return true;
+    // Ritorna 'true' se NON viene trovato nessun elemento in 'this' che non esista in 'other'.
+    return !this.TraverseForward(dat -> !other.Exists(dat));
   }
 
 }

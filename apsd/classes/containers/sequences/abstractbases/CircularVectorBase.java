@@ -84,9 +84,16 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
   public void ShiftLeft(Natural pos, Natural num) {
     if (pos.IsZero()) {
       long capacity = arr.length;
-      if (capacity > 0) { start = (start + num.ToLong()) % capacity; }
-    } else
+      if (capacity > 0) {
+        long n = Math.min(num.ToLong(), capacity);
+        for (long i = 0; i < n; i++) {
+          SetAt(null, Natural.Of(i)); // Pulisce le vecchie posizioni logiche
+        }
+        start = (start + n) % capacity; // Sposta il puntatore
+      }
+    } else {
       super.ShiftLeft(pos, num);
+    }
   }
 
   @Override
@@ -94,8 +101,9 @@ abstract public class CircularVectorBase<Data> extends VectorBase<Data> { // Mus
     if (pos.IsZero()) {
       long capacity = arr.length;
       if (capacity > 0) { start = ((start - num.ToLong()) % capacity + capacity) % capacity; }
-    } else
+    } else {
       super.ShiftRight(pos, num);
+    }
   }
 
 }

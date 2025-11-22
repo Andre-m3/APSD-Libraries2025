@@ -78,14 +78,12 @@ abstract public class DynCircularVectorBase<Data> extends CircularVectorBase<Dat
 
   @Override
   public void ShiftLeft(Natural pos, Natural num) {
-    super.ShiftLeft(pos, num);
-    if (pos.IsZero()) { Reduce(num); }
+    DynVector.super.ShiftLeft(pos, num);
   }
 
   @Override
   public void ShiftRight(Natural pos, Natural num) {
-    super.ShiftRight(pos, num);
-    if (pos.IsZero()) { Expand(num); }
+    DynVector.super.ShiftRight(pos, num);
   }
 
 }

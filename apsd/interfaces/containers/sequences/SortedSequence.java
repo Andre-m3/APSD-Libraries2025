@@ -29,12 +29,20 @@ public interface SortedSequence<Data extends Comparable<? super Data>> extends S
     while (left <= right) {
       long mid = left + (right - left) / 2;
       Data midVal = GetAt(Natural.Of(mid));
-      int cmp = midVal.compareTo(val); 
-      // Come spiegato a lezione, cmp==0 significa che sono uguali!
+      int cmp;
+
+      if (midVal == null) {
+        // Se l'elemento in mezzo è null, e viene cercato null, abbiamo trovato una corrispondenza potenziale.
+        // Ma siccome il compareTo non fornisce risultati corretti quando confrontato un null (es.: null.compareTo(10))
+        // Allora delego alla ricerca lineare (più lenta! Però avverrà raramente) se troviamo un null.
+        /** DA RICONTROLLARE: Noi siamo sicuri di non avere mai Sorted Sequences con null? E quindi di non inciampare mai in questo caso? */
+        return Sequence.super.Search(val);
+      }
+      cmp = midVal.compareTo(val);
 
       if (cmp < 0) left = mid + 1;        // Cerca nella metà destra
       else if (cmp > 0) right = mid - 1;  // Cerca nella metà sinistra
-      else return Natural.Of(mid);        // Trovato!
+      else return Natural.Of(mid);        // Trovato
     }
 
     return null; // Elemento non presente

@@ -151,8 +151,9 @@ abstract public class VectorBase<Data> implements Vector<Data> {
   
     long fromIndex = from.ToLong();   // Creo "fromIndex" e "toIndex"
     long toIndex = to.ToLong();       // Così da non richiamare svariate volte il metodo ToLong()
-    if (toIndex > Capacity().ToLong() || fromIndex > toIndex)   // "fromIndex" è un Natural, non può essere negativo
-      throw new IndexOutOfBoundsException("Invalid subsequence range!");
+    if (fromIndex > toIndex || toIndex >= Size().ToLong()) {
+      throw new IndexOutOfBoundsException("Invalid subsequence range: from=" + fromIndex + ", to=" + toIndex + ", size=" + Size().ToLong());
+    }
 
     long subSize = toIndex - fromIndex + 1;   // SubSize ('toIndex' e 'fromIndex' inclusi)
     Data[] subArray = (Data[]) new Object[(int) subSize];
