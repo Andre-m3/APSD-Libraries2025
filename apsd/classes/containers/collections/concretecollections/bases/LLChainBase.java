@@ -46,7 +46,6 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
   abstract protected LLChainBase<Data> NewChain(long size, LLNode<Data> head, LLNode<Data> tail);
 
-
   /* ************************************************************************ */
   /* Specific member functions from LLChainBase                               */
   /* ************************************************************************ */
@@ -196,11 +195,11 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     
     protected final ForwardIterator<Box<LLNode<Data>>> iter;
 
-    protected ListFIterator() {
+    public ListFIterator() {
       iter = FRefIterator();
     }
 
-    protected ListFIterator(ListFIterator iter) {
+    public ListFIterator(ListFIterator iter) {
       this.iter = iter.iter; // ...= new ListFRefIterator((ListFRefIterator) iter.iter); Causa dell'errore?
     } 
 
@@ -240,11 +239,11 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
     
     protected final BackwardIterator<Box<LLNode<Data>>> iter;
 
-    protected ListBIterator() {
+    public ListBIterator() {
       iter = BRefIterator();
     }
 
-    protected ListBIterator(ListBIterator iter) {
+    public ListBIterator(ListBIterator iter) {
       this.iter = iter.iter; // ...= new ListBRefIterator((ListBRefIterator) iter.iter); Causa dell'errore?
     }
 
