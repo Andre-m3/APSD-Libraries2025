@@ -22,7 +22,7 @@ abstract public class XDynVectorITest extends XDynVectorTest<Long> {
     TestSetAt(1L, Natural.Of(5), true);
     TestSetLast(1L, false);
     TestSize(5, false);
-    TestPrintContent("");
+    TestPrintContent("Initial Dynamic Vector");
   }
 
   @Nested
