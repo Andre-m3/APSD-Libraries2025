@@ -162,18 +162,165 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
   /* Override specific member functions from SortedSequence                   */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  public Natural SearchPredecessor(Data val) {
+    if (headref.IsNull()) return null;
+    if (headref.Get().Get().compareTo(val) >= 0) return null; // Head >= val, nessun predecessore
+
+    long idx = 0;
+    ForwardIterator<Data> iter = FIterator();
+    long predIdx = -1;
+
+    while (iter.IsValid()) {
+      if (iter.GetCurrent().compareTo(val) < 0) { predIdx = idx; } // Trovato un candidato valido
+      else {
+        // Appena viene trovato un elemento >= val, ci fermiamo.
+        // Essendo ordinata, non verranno trovati altri predecessori migliori.
+        break; 
+      }
+      iter.Next();
+      idx++;
+    }
+
+    return (predIdx != -1) ? Natural.Of(predIdx) : null;
+  }
+
+  @Override
+  public Natural SearchSuccessor(Data val) {
+    if (headref.IsNull()) return null;
+
+    long idx = 0;
+    ForwardIterator<Data> iter = FIterator();
+
+    while (iter.IsValid()) {
+      if (iter.GetCurrent().compareTo(val) > 0) {
+        return Natural.Of(idx); // Trovato il primo maggiorante
+      }
+      iter.Next();
+      idx++;
+    }
+
+    return null; // Nessun maggiorante trovato
+  }
 
   /* ************************************************************************ */
   /* Override specific member functions from OrderedSet                       */
   /* ************************************************************************ */
 
-  // ...
+  // Diagrams.pdf: "Override of The six methods for Predecessor and Successor"
+
+  @Override
+  public Data Predecessor(Data val) {
+      LLNode<Data> pred = PredFind(val);
+      return (pred != null) ? pred.Get() : null;
+  }
+
+  @Override
+  public Data Successor(Data val) {
+      LLNode<Data> ps = PredSuccFind(val);
+      if (ps == null) {
+          return (!headref.IsNull()) ? headref.Get().Get() : null;
+      } else {
+          return (!ps.GetNext().IsNull()) ? ps.GetNext().Get().Get() : null;
+      }
+  }
+
+  @Override
+  public Data PredecessorNRemove(Data val) {
+      LLNode<Data> pp = PredPredFind(val);
+      
+      // Caso pp = null.
+      // Se PredFind(val) non è null, allora PredFind(val) deve essere la testa.
+      LLNode<Data> pred = PredFind(val);
+      if (pp == null) {
+          if (pred != null && pred == headref.Get()) {
+              // Rimuovi testa
+              Data res = pred.Get();
+              headref.Set(pred.GetNext().Get());
+              if (headref.IsNull()) tailref.Set(null);
+              size.Decrement();
+              return res;
+          }
+          return null; // Non c'è predecessore
+      }
+      
+      // Caso pp esiste. Il nodo da rimuovere è pp.next
+      LLNode<Data> toRemove = pp.GetNext().Get();
+      if (toRemove == null) return null;  // check di sicurezza, caso che non dovrebbe mai avvenire
+
+      Data res = toRemove.Get();
+      pp.SetNext(toRemove.GetNext().Get());
+      if (pp.GetNext().IsNull()) tailref.Set(pp);
+      size.Decrement();
+      return res;
+  }
+
+  @Override
+  public Data SuccessorNRemove(Data val) {
+      
+      LLNode<Data> ps = PredSuccFind(val);
+      Box<LLNode<Data>> link; 
+      
+      if (ps == null) { link = headref; }
+      else { link = ps.GetNext(); }
+
+      LLNode<Data> succ = link.Get();
+      if (succ != null) { // Trovato successore
+          Data res = succ.Get();
+          link.Set(succ.GetNext().Get());
+          if (link.IsNull()) { // coda rimossa
+             tailref.Set(ps); // Se ps è null, tailref diventa null
+          }
+          size.Decrement();
+          return res;
+      }
+      return null;
+  }
+
+  @Override
+  public void RemovePredecessor(Data val) { PredecessorNRemove(val); }
+
+  @Override
+  public void RemoveSuccessor(Data val) { SuccessorNRemove(val); }
 
   /* ************************************************************************ */
   /* Override specific member functions from Chain                            */
   /* ************************************************************************ */
 
-  // ...
+  @Override
+  public boolean InsertIfAbsent(Data val) {
+    if (Search(val) != null) return false;
+    return Insert(val);
+  }
+
+  @Override
+  public void RemoveOccurrences(Data val) {
+    if (val == null) return;
+
+    LLNode<Data> prev = null;
+    LLNode<Data> curr = headref.Get();
+
+    // 1. FASE DI RICERCA: Avanzo finché curr < val
+    while (curr != null && curr.Get().compareTo(val) < 0) {
+      prev = curr;
+      curr = curr.GetNext().Get();
+    }
+
+    // 2. FASE DI RIMOZIONE: Rimuovo finché curr == val
+    while (curr != null && curr.Get().compareTo(val) == 0) {
+      // Salvo il riferimento al prossimo nodo
+      LLNode<Data> nextNode = curr.GetNext().Get();
+      
+      // Scollego 'curr' collegando 'prev' direttamente a 'nextNode' (un nodo è stato rimosso!)
+      if (prev == null) { headref.Set(nextNode); } // Caso in cui rimuovo la testa
+      else { prev.SetNext(nextNode); } // Caso in cui rimuovo un nodo interno o coda
+      
+      // Gestione Coda: Se nextNode è null, è stato rimosso l'ultimo elemento...
+      //                Allora la nuova coda diventa 'prev'!
+      if (nextNode == null) { tailref.Set(prev); }
+      size.Decrement();
+      curr = nextNode;
+    }
+  } 
 
 }
