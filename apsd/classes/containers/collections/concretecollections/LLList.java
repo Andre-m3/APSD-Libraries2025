@@ -45,21 +45,21 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
   @Override
   public void SetAt(Data val, Natural pos) {
-    // if (val == null) return; ATTENZIONE: I test in teoria non prevedono silent failure (?)
+    // if (val == null) return; ATTENZIONE: I test non prevedono silent failure (return vuoto) (?)
     List.super.SetAt(val, pos);
   }
 
   @Override
   public void SetFirst(Data val) {
-    // if (val == null) return; ATTENZIONE: I test in teoria non prevedono silent failure (?)
-    if (headref.IsNull()) throw new IllegalStateException("First element doesn't exist...");
+    // if (val == null) return; ATTENZIONE: I test non prevedono silent failure (return vuoto) (?)
+    if (headref.IsNull()) throw new IndexOutOfBoundsException("First element doesn't exist...");
     headref.Get().Set(val);
   }
 
   @Override
   public void SetLast(Data val) {
-    // if (val == null) return; ATTENZIONE: I test in teoria non prevedono silent failure (?)
-    if (tailref.IsNull()) throw new IllegalStateException("Last element doesn't exist...");
+    // if (val == null) return; ATTENZIONE: I test non prevedono silent failure (return vuoto) (?)
+    if (tailref.IsNull()) throw new IndexOutOfBoundsException("Last element doesn't exist...");
     tailref.Get().Set(val);
   }
 
@@ -74,7 +74,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
   @Override
   public void InsertAt(Data val, Natural pos) {
-    // if (val == null) return; ATTENZIONE: I test in teoria non prevedono silent failure (?)
+    // if (val == null) return; ATTENZIONE: I test non prevedono silent failure (return vuoto) (?)
     if (pos == null) throw new NullPointerException("Position cannot be null!");
     long idx = pos.ToLong();
     if (idx > Size().ToLong()) throw new IndexOutOfBoundsException("Position out of bound!");
@@ -90,7 +90,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
   @Override
   public void InsertFirst(Data val) {
-    // if (val == null) return; ATTENZIONE: I test in teoria non prevedono silent failure (?)
+    // if (val == null) return; ATTENZIONE: I test non prevedono silent failure (return vuoto) (?)
     LLNode<Data> nnode = new LLNode<>(val, headref.Get());
     headref.Set(nnode);
     if (tailref.IsNull()) { tailref.Set(nnode); }
@@ -99,7 +99,7 @@ public class LLList<Data> extends LLChainBase<Data> implements List<Data> { // M
 
   @Override
   public void InsertLast(Data val) {
-    // if (val == null) return; ATTENZIONE: I test in teoria non prevedono silent failure (?)
+    // if (val == null) return; ATTENZIONE: I test non prevedono silent failure (return vuoto) (?)
     
     LLNode<Data> nnode = new LLNode<>(val, null);
     if (tailref.IsNull()) { headref.Set(nnode); }

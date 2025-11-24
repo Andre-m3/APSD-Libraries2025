@@ -13,8 +13,8 @@ public interface RemovableAtSequence<Data> extends Sequence<Data> {
 
   // RemoveFirst
   default void RemoveFirst() {
-    if (!IsEmpty()) { RemoveAt(Natural.ZERO); }
-  } // If isEmpty() -> nothing to remove!
+    RemoveAt(Natural.ZERO);
+  } // If IsEmpty() -> RemoveAt will throw new Exception!
 
   // FirstNRemove
   default Data FirstNRemove() {
@@ -24,8 +24,9 @@ public interface RemovableAtSequence<Data> extends Sequence<Data> {
 
   // RemoveLast
   default void RemoveLast() {
-    if (!IsEmpty()) { RemoveAt(Size().Decrement()); }
-  } // If isEmpty() -> nothing to remove!
+    if (IsEmpty()) throw new IndexOutOfBoundsException("Sequence is empty");
+    RemoveAt(Size().Decrement());
+  } // If isEmpty() -> we must handle Size().Decrement(), so we throw new Exception!
 
   // LastNRemove
   default Data LastNRemove() {

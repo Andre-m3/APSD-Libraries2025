@@ -285,7 +285,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
   @Override
   public Data GetFirst() {
-    if (headref.IsNull()) throw new IllegalStateException("First element doesn't exist...");
+    if (headref.IsNull()) throw new IndexOutOfBoundsException("First element doesn't exist...");
     return headref.Get().Get();
   }
 
@@ -345,7 +345,9 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
 
   @Override
   public void RemoveFirst() {
-    if (headref.IsNull()) return;
+    // Caso speciale -> lista vuota
+    if (headref.IsNull()) throw new IndexOutOfBoundsException("Empty"); // Dai test viene chiesto di lanciare eccezione...
+    
     LLNode<Data> node = headref.Get();
     if (tailref.Get() == node) {
       headref.Set(null);
@@ -359,7 +361,7 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
   @Override
   public void RemoveLast() {
     // Caso speciale -> lista vuota
-    if (headref.IsNull()) return;
+    if (headref.IsNull()) throw new IndexOutOfBoundsException("Empty"); // Dai test viene chiesto di lanciare eccezione...
 
     // Gestiamo il caso in cui size = 1, quindi headref punta al primo elemento
     if (size.ToLong() == 1) { // Caso "speciale" -> size = 1
