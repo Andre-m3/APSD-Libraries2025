@@ -30,8 +30,7 @@ public interface RemovableAtSequenceTest<Data, Con extends RemovableAtSequence<D
       "AtNRemove should throw exception for invalid position");
     } else {
       long initialSize = ThisContainer().Size().ToLong();
-      Data removed = ThisContainer().AtNRemove(position);
-      assertEquals(expectedElement, removed,
+      assertEquals(expectedElement, ThisContainer().AtNRemove(position),
       "AtNRemove should return the removed element");
       assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
       "Size should decrease by 1 after AtNRemove");
@@ -62,8 +61,7 @@ public interface RemovableAtSequenceTest<Data, Con extends RemovableAtSequence<D
       () -> ThisContainer().FirstNRemove(),
       "FirstNRemove should throw exception on empty sequence");
     } else {
-      Data removed = ThisContainer().FirstNRemove();
-      assertEquals(expectedElement, removed,
+      assertEquals(expectedElement, ThisContainer().FirstNRemove(),
       "FirstNRemove should return the first element");
       assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
       "Size should decrease by 1 after FirstNRemove");
@@ -94,8 +92,7 @@ public interface RemovableAtSequenceTest<Data, Con extends RemovableAtSequence<D
       () -> ThisContainer().LastNRemove(),
       "LastNRemove should throw exception on empty sequence");
     } else {
-      Data removed = ThisContainer().LastNRemove();
-      assertEquals(expectedElement, removed,
+      assertEquals(expectedElement, ThisContainer().LastNRemove(),
       "LastNRemove should return the last element");
       assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
       "Size should decrease by 1 after LastNRemove");

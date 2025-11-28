@@ -21,8 +21,7 @@ public interface DynVectorTest<Data, Con extends DynVector<Data>> extends Vector
   default void TestAtNRemoveWithAutoReduction(Natural position, Data expectedElement) {
     BeginTest("AtNRemoveWithAutoReduction");
     long initialSize = ThisContainer().Size().ToLong();
-    Data removed = ThisContainer().AtNRemove(position);
-    assertEquals(expectedElement, removed,
+    assertEquals(expectedElement, ThisContainer().AtNRemove(position),
     "AtNRemove should return the removed element");
     assertEquals(initialSize - 1, ThisContainer().Size().ToLong(),
     "AtNRemove should automatically reduce size");
