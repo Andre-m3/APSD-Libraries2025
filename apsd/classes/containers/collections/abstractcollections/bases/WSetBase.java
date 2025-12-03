@@ -84,8 +84,22 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
   /* Override specific member functions from Set                              */
   /* ************************************************************************ */
 
-  // NOTA ATTENZIONE: In teoria non serve o sbaglio? Nel Diagrams è un errore?
-  // @Override
-  // public void Intersection(Set<Data> set) { chn.Intersection(set); }
+  @Override
+  public void Intersection(Set<Data> set) { chn.Intersection(set); }
+
+  /** TEST CUSTOM -> FACCIO UN CONTROLLO SULLA "difference"
+   * Se viene chiesta una Difference su un determinato set,
+   * ma this (quindi questo set) è proprio il set passato al metodo, alora devo fare una clear!
+   * Se da un set, rimuovo esattamente tutti gli elementi (Set1 = Set2, quindi Set2-Set1 è vuoto)
+   * Allora richiamo Clear per gestire bene anche il resto! Ho svuotato il Set...
+   */
+  @Override
+  public void Difference(Set<Data> set) {
+    if (set == this) chn.Clear();
+    else chn.Difference(set);
+  }
+
+  // Union e Intersection non hanno questo problema, vista la logica differente.
+  // Non serve fare un override di Union
 
 }

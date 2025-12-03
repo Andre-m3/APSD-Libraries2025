@@ -7,6 +7,7 @@ import apsd.classes.utilities.Natural;
 import apsd.classes.containers.collections.concretecollections.*;
 import apsd.classes.containers.collections.abstractcollections.*;
 import apsd.classes.containers.deqs.*;
+import apsd.interfaces.containers.iterators.BackwardIterator;
 import apsd.interfaces.containers.iterators.ForwardIterator;
 
 import java.util.Random;
@@ -176,7 +177,6 @@ public class PersonalTest {
     // Verifica che le liste accettino null (se la tua implementazione lo permette).
     // --------------------------------------------------------------------------
 
-    // 3. TEST NULL PROFONDO (LLList)
     @Test
     void testList_NullHandling() {
         System.out.println("[Personal] Testing Null Handling in Lists...");
@@ -211,5 +211,141 @@ public class PersonalTest {
         assertEquals("B", list.GetAt(Natural.Of(1)), "After RemoveAt(1), B should shift to pos 1");
 
         System.out.println("Null Handling LLList Passed!");
+    }
+
+    // --------------------------------------------------------------------------
+    // 6. TEST ALGEBRA DEGLI INSIEMI (Self-Operations)
+    // Verifica comportamenti critici come Union(this) e Difference(this).
+    // --------------------------------------------------------------------------
+    
+    @Test
+    void testSet_Algebra_EdgeCases() {
+        System.out.println("[Personal] Testing Set Algebra Edge Cases...");
+        
+        // Test su WSet
+        WSet<String> set = new WSet<>();
+        set.Insert("A");
+        set.Insert("B");
+        
+        // Unione con se stesso: NON deve cambiare nulla (no duplicati)
+        set.Union(set);
+        assertEquals(Natural.Of(2), set.Size(), "Union with itself should not increase size");
+        
+        // Differenza con se stesso: DEVE svuotare l'insieme
+        set.Difference(set);
+        assertTrue(set.IsEmpty(), "Difference with itself should clear the set");
+        
+        // Test su WOrderedSet (per verificare che la delega funzioni)
+        WOrderedSet<Integer> oSet = new WOrderedSet<>();
+        oSet.Insert(10);
+        oSet.Insert(20);
+        oSet.Difference(oSet);
+        assertTrue(oSet.IsEmpty(), "OrderedSet Difference with itself failed");
+        
+        System.out.println("Set Algebra Logic Passed!");
+    }
+
+    // --------------------------------------------------------------------------
+    // 7. TEST INDIPENDENZA COPIE (Deep Copy)
+    // Verifica che i costruttori di copia creino strutture indipendenti.
+    // --------------------------------------------------------------------------
+    @Test
+    void testCopy_Independence() {
+        System.out.println("[Personal] Testing Copy Constructor Independence...");
+        
+        // 1. Creo lista originale
+        VList<Integer> original = new VList<>();
+        original.InsertLast(1);
+        original.InsertLast(2);
+        
+        // 2. Creo copia (usando costruttore che prende TraversableContainer)
+        VList<Integer> copy = new VList<>(original);
+        
+        // 3. Modifico la copia
+        copy.InsertLast(3);
+        copy.RemoveFirst(); // Rimuove 1
+        
+        // 4. Verifico che l'originale sia INTATTO
+        assertEquals(Natural.Of(2), original.Size(), "Original size changed!");
+        assertEquals(1, original.GetFirst(), "Original content changed!");
+        
+        // 5. Verifico la copia
+        assertEquals(Natural.Of(2), copy.Size()); // Rimasto 2 e 3
+        assertEquals(2, copy.GetFirst());
+        
+        System.out.println("Copy Independence Passed!");
+    }
+
+    // --------------------------------------------------------------------------
+    // 8. TEST LIMITI ORDINAMENTO (Pred/Succ Edge Cases)
+    // Verifica il comportamento ai bordi di LLSortedChain.
+    // --------------------------------------------------------------------------
+    @Test
+    void testSortedChain_Boundaries() {
+        System.out.println("[Personal] Testing SortedChain Boundaries...");
+        
+        LLSortedChain<Integer> chain = new LLSortedChain<>();
+        chain.Insert(10);
+        chain.Insert(20);
+        chain.Insert(30); // [10, 20, 30]
+        
+        // A. Predecessore del Minimo -> null
+        assertNull(chain.Predecessor(10), "Predecessor of Min should be null");
+        
+        // B. Successore del Massimo -> null
+        assertNull(chain.Successor(30), "Successor of Max should be null");
+        
+        // C. Predecessore di un valore esterno a sinistra (5) -> null
+        assertNull(chain.Predecessor(5), "Predecessor of value < Min should be null");
+        
+        // D. Successore di un valore esterno a destra (40) -> null
+        assertNull(chain.Successor(40), "Successor of value > Max should be null");
+        
+        // E. Valori intermedi non presenti
+        // Cerco pred(25). Dovrebbe essere 20.
+        assertEquals(20, chain.Predecessor(25), "Predecessor of 25 should be 20");
+        // Cerco succ(25). Dovrebbe essere 30.
+        assertEquals(30, chain.Successor(25), "Successor of 25 should be 30");
+        
+        System.out.println("SortedChain Boundaries Passed!");
+    }
+
+    // --------------------------------------------------------------------------
+    // 9. TEST ITERATORI AVANZATI (DataNNext / DataNPrev)
+    // Verifica l'uso combinato di accesso e movimento.
+    // --------------------------------------------------------------------------
+    @Test
+    void testIterators_Advanced() {
+        System.out.println("[Personal] Testing Advanced Iterator Operations...");
+        
+        LLList<String> list = new LLList<>();
+        list.InsertLast("A");
+        list.InsertLast("B");
+        
+        // Forward
+        ForwardIterator<String> it = list.FIterator();
+        assertEquals("A", it.DataNNext(), "DataNNext should return current then advance");
+        assertEquals("B", it.GetCurrent(), "Should be at B now");
+        
+        // Backward
+        // Nota: BIterator parte dalla fine? Dipende dalla tua implementazione in LLChainBase.
+        // Di solito BIterator parte dall'ultimo elemento.
+        // Verifica: Reset() in LLChainBase posiziona curr = -1? No, Reset() mette curr = Size-1 (se array based).
+        // Verifichiamo la tua logica ListBRefIterator: Reset() -> curr = -1, poi riempie array. 
+        // Aspetta, il Reset() del BRefIterator metteva curr = -1 e riempiva.
+        // Ma alla fine del Reset, curr deve puntare all'ultimo elemento valido!
+        // Se curr rimane -1 dopo il loop di riempimento, l'iteratore parte "finito".
+        
+        // Controlliamo il tuo codice ListBRefIterator.Reset():
+        // for (...) { arr.SetAt(..., ++curr); }
+        // Sì! curr viene incrementato. Se size=2, curr diventa 0 poi 1. 
+        // Quindi alla fine punta all'ultimo elemento. OK!
+        
+        BackwardIterator<String> bit = list.BIterator();
+        assertTrue(bit.IsValid());
+        assertEquals("B", bit.DataNPrev(), "DataNPrev should return Last then move back");
+        assertEquals("A", bit.GetCurrent(), "Should be at A now");
+        
+        System.out.println("Advanced Iterators Passed!");
     }
 }
