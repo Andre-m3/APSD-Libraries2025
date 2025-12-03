@@ -85,4 +85,25 @@ public class VSortedChain<Data extends Comparable<? super Data>> extends VChainB
       vec.Reduce(Natural.Of(size - wrt));
   }
 
+  
+  /** CORREZIONI POST-TEST -> ERRORE "VOrderedSetITest" FALLISCCE SU MIN() E MAX()
+   * Dai test emerge un'incongruenza con Min() e Max().
+   * I test voglio null, non exception (come giusto che sia a parer mio).
+   * Però in una SoortedChain il min e il max sono rispettivamente il primo ed ultimo elemento! Quindi richiamiamo GetFirst e GetLast
+   * Qui nasce un errore. Se il vettore è vuoto, GetFirst dirà "non esiste il primo elemento, lancio ExceptionIndexOutOfBound", come giusto che sia...
+   * Siccome però i test richiedono il null come valore di ritorno, faccio un Override "semplice" per aggirare l'eccezione
+   * */
+
+  @Override
+  public Data Min() {
+    if (IsEmpty()) return null;   // Così se il vettore è vuoto, ritorno null!
+    return GetFirst();
+  }
+
+  @Override
+  public Data Max() {
+    if (IsEmpty()) return null;   // Discorso analogo per il massimo, come detto nel commento precedente...
+    return GetLast();
+  }
+
 }

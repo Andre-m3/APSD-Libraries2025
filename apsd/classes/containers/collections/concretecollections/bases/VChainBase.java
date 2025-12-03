@@ -135,4 +135,5 @@ abstract public class VChainBase<Data> implements Chain<Data> { // Must implemen
 
     return false;
   }
+
 }

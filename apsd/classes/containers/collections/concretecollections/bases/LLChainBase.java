@@ -331,16 +331,23 @@ abstract public class LLChainBase<Data> implements Chain<Data> { // Must impleme
   public Data AtNRemove(Natural index) {
     long idx = ExcIfOutOfBound(index);
     if (idx == 0) return FirstNRemove();
-    else if (idx == size.ToLong() - 1) return LastNRemove();
-    else {
-      ForwardIterator<Box<LLNode<Data>>> iter = FRefIterator();
-      iter.Next(idx);
-      Box<LLNode<Data>> current = iter.GetCurrent();
-      LLNode<Data> node = current.Get();
-      current.Set(node.GetNext().Get());
-      size.Decrement();
-      return node.Get();      
+    else if (idx == size.ToLong() - 1) {
+      /**
+       *  Qui non richiamo LastNRemove(), visto che come è implementata ora potrebbe generare loop infiniti se richiamata qui.
+       *  Allora salviamo il last tramite la coda che abbiamo impostato! Dopodiché rimuoviamo l'ultimo e restituiamo il valore...
+       */
+      Data last = tailref.Get().Get();
+      RemoveLast();
+      return last;
     }
+    
+    ForwardIterator<Box<LLNode<Data>>> iter = FRefIterator();
+    iter.Next(idx);
+    Box<LLNode<Data>> current = iter.GetCurrent();
+    LLNode<Data> node = current.Get();
+    current.Set(node.GetNext().Get());
+    size.Decrement();
+    return node.Get();      
   }
 
   @Override

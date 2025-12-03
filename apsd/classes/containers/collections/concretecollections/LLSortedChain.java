@@ -283,6 +283,27 @@ public class LLSortedChain<Data extends Comparable<? super Data>> extends LLChai
   @Override
   public void RemoveSuccessor(Data val) { SuccessorNRemove(val); }
 
+  /** CORREZIONI POST-TEST -> ERRORE "LLOrderedSetITest" FALLISCCE SU MIN() E MAX()
+   * Dai test emerge un'incongruenza con Min() e Max().
+   * I test voglio null, non exception (come giusto che sia a parer mio).
+   * Però in una SoortedChain il min e il max sono rispettivamente il primo ed ultimo elemento! Quindi richiamiamo GetFirst e GetLast
+   * Qui nasce un errore. Se la lista è vuota, GetFirst dirà "non esiste il primo elemento, lancio ExceptionIndexOutOfBound", come giusto che sia...
+   * Siccome però i test richiedono il null come valore di ritorno, faccio un Override "semplice" per aggirare l'eccezione
+   * */
+
+  @Override
+  public Data Min() {
+    if (IsEmpty()) return null;   // Ecco, così se la lista è vuota, ritorno nulll!
+    return GetFirst();
+  }
+
+  @Override
+  public Data Max() {
+    if (IsEmpty()) return null;   // Discorso analogo per il massimo, come detto nel commento precedente...
+    return GetLast();
+  }
+  
+
   /* ************************************************************************ */
   /* Override specific member functions from Chain                            */
   /* ************************************************************************ */
