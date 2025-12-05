@@ -84,8 +84,7 @@ abstract public class WSetBase<Data, Chn extends Chain<Data>> implements Set<Dat
   /* Override specific member functions from Set                              */
   /* ************************************************************************ */
 
-  @Override
-  public void Intersection(Set<Data> set) { chn.Intersection(set); }
+  /** NOTA -> Uml errato (lo vedemmo a lezione): Non serve override di Intersection! */
 
   /** TEST CUSTOM -> FACCIO UN CONTROLLO SULLA "difference"
    * Se viene chiesta una Difference su un determinato set,

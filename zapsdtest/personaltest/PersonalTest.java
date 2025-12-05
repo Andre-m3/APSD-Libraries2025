@@ -210,7 +210,7 @@ public class PersonalTest {
         assertEquals(Natural.Of(4), list.Size());
         assertEquals("B", list.GetAt(Natural.Of(1)), "After RemoveAt(1), B should shift to pos 1");
 
-        System.out.println("Null Handling LLList Passed!");
+        System.out.println("[Personal] Null Handling LLList Passed!");
     }
 
     // --------------------------------------------------------------------------
@@ -242,7 +242,7 @@ public class PersonalTest {
         oSet.Difference(oSet);
         assertTrue(oSet.IsEmpty(), "OrderedSet Difference with itself failed");
         
-        System.out.println("Set Algebra Logic Passed!");
+        System.out.println("[Personal] Set Algebra Logic Passed!");
     }
 
     // --------------------------------------------------------------------------
@@ -273,7 +273,7 @@ public class PersonalTest {
         assertEquals(Natural.Of(2), copy.Size()); // Rimasto 2 e 3
         assertEquals(2, copy.GetFirst());
         
-        System.out.println("Copy Independence Passed!");
+        System.out.println("[Personal] Copy Independence Passed!");
     }
 
     // --------------------------------------------------------------------------
@@ -307,13 +307,14 @@ public class PersonalTest {
         // Cerco succ(25). Dovrebbe essere 30.
         assertEquals(30, chain.Successor(25), "Successor of 25 should be 30");
         
-        System.out.println("SortedChain Boundaries Passed!");
+        System.out.println("[Personal] SortedChain Boundaries Passed!");
     }
 
     // --------------------------------------------------------------------------
     // 9. TEST ITERATORI AVANZATI (DataNNext / DataNPrev)
     // Verifica l'uso combinato di accesso e movimento.
     // --------------------------------------------------------------------------
+
     @Test
     void testIterators_Advanced() {
         System.out.println("[Personal] Testing Advanced Iterator Operations...");
@@ -346,6 +347,7 @@ public class PersonalTest {
         assertEquals("B", bit.DataNPrev(), "DataNPrev should return Last then move back");
         assertEquals("A", bit.GetCurrent(), "Should be at A now");
         
-        System.out.println("Advanced Iterators Passed!");
+        System.out.println("[Personal] Advanced Iterators Passed!");
     }
+
 }

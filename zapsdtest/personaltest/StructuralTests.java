@@ -53,7 +53,7 @@ public class StructuralTests {
     // L'accesso a 2 deve fallire
     assertThrows(IndexOutOfBoundsException.class, () -> vec.GetAt(Natural.Of(2)));
 
-    System.out.println("Size/Capacity Consistency Passed!");
+    System.out.println("[Structural] Size/Capacity Consistency Passed!");
   }
 
   // --------------------------------------------------------------------------
@@ -98,7 +98,7 @@ public class StructuralTests {
     assertEquals("D", vec.GetAt(Natural.Of(3)), "D shifted left to 3");
     assertNull(vec.GetAt(Natural.Of(4)), "Pos 4 should be null (gap from shift)");
 
-    System.out.println("Circular Shift Logic Passed!");
+    System.out.println("[Structural] Circular Shift Logic Passed!");
   }
 
   // --------------------------------------------------------------------------
@@ -130,6 +130,113 @@ public class StructuralTests {
     vec.ShiftRight(Natural.Of(0), Natural.Of(0));
     assertEquals(99, vec.GetAt(Natural.Of(0)), "Shift with 0 count should verify identity");
 
-    System.out.println("Shift Edge Cases Passed!");
+    System.out.println("[Structural] Shift Edge Cases Passed!");
   }
+
+  /* ************************************************************************ */
+  /* 4.                                                     */
+  /*         */
+  /* ************************************************************************ */
+
+  @Test
+  void testDynVector_ReallocGrowKeepsOrder() {
+    System.out.println("[Structural] Testing DynVector ReallocGrowKeepsOrder...");
+    DynCircularVector<Integer> vec = new DynCircularVector<>(Natural.Of(3));
+    vec.Expand(Natural.Of(3));
+    vec.SetAt(1, Natural.Of(0));
+    vec.SetAt(2, Natural.Of(1));
+    vec.SetAt(3, Natural.Of(2));
+
+    System.out.println("  > Realloc verso capacità 8");
+    vec.Realloc(Natural.Of(8));
+    assertEquals(Natural.Of(3), vec.Size(), "[Structural][Fail] Size deve restare 3");
+    assertEquals(Natural.Of(8), vec.Capacity(), "[Structural][Fail] Capacity deve valere 8");
+    assertEquals(1, vec.GetAt(Natural.Of(0)));
+    assertEquals(2, vec.GetAt(Natural.Of(1)));
+    assertEquals(3, vec.GetAt(Natural.Of(2)));
+
+    vec.Expand(Natural.Of(2)); // sblocca i nuovi slot
+    assertNull(vec.GetAt(Natural.Of(3)), "[Structural][Fail] Slot 3 deve essere null");
+    assertNull(vec.GetAt(Natural.Of(4)), "[Structural][Fail] Slot 4 deve essere null");
+    vec.SetAt(77, Natural.Of(4));
+    assertEquals(77, vec.GetAt(Natural.Of(4)));
+    assertEquals(1, vec.GetAt(Natural.Of(0)));
+    System.out.println("[Structural] DynVector ReallocGrowKeepsOrder Passed!");
+  }
+
+  /* ************************************************************************ */
+  /* 5.                                                     */
+  /*         */
+  /* ************************************************************************ */
+
+  @Test
+  void testDynVector_ReallocZeroResets() {
+    System.out.println("[Structural] Testing DynVector ReallocZeroResets...");
+    DynCircularVector<Integer> vec = new DynCircularVector<>(Natural.Of(4));
+    vec.Expand(Natural.Of(4));
+    vec.SetAt(10, Natural.Of(0));
+    vec.SetAt(20, Natural.Of(1));
+    vec.SetAt(30, Natural.Of(2));
+    vec.SetAt(40, Natural.Of(3));
+
+    System.out.println("  > Realloc verso 0");
+    vec.Realloc(Natural.Of(0));
+    assertEquals(Natural.Of(0), vec.Size(), "[Structural][Fail] Size deve reset");
+    assertEquals(Natural.Of(0), vec.Capacity(), "[Structural][Fail] Capacity deve reset");
+    assertThrows(IndexOutOfBoundsException.class, () -> vec.GetAt(Natural.Of(0)),
+        "[Structural][Fail] Accesso dopo reset deve fallire");
+
+    vec.Realloc(Natural.Of(3));
+    vec.Expand(Natural.Of(3));
+    vec.SetAt(111, Natural.Of(0));
+    vec.SetAt(222, Natural.Of(1));
+    vec.SetAt(333, Natural.Of(2));
+    assertEquals(111, vec.GetAt(Natural.Of(0)));
+    assertEquals(222, vec.GetAt(Natural.Of(1)));
+    assertEquals(333, vec.GetAt(Natural.Of(2)));
+    System.out.println("[Structural] DynVector ReallocZeroResets Passed!");
+  }
+
+  /* ************************************************************************ */
+  /* 6.                                                     */
+  /*         */
+  /* ************************************************************************ */
+
+  @Test
+  void testCircularVector_ShiftWrapAround() {
+    System.out.println("[Structural] Testing CircularVector ShiftWrapAround...");
+    CircularVector<Integer> vec = new CircularVector<>(Natural.Of(5));
+    for (int i = 0; i < 5; i++) {
+      vec.SetAt(i + 1, Natural.Of(i));
+    }
+
+    System.out.println("  > ShiftRight(0,2)");
+    vec.ShiftRight(Natural.Of(0), Natural.Of(2));
+    assertNull(vec.GetAt(Natural.Of(0)));
+    assertNull(vec.GetAt(Natural.Of(1)));
+    assertEquals(1, vec.GetAt(Natural.Of(2)));
+    assertEquals(2, vec.GetAt(Natural.Of(3)));
+    assertEquals(3, vec.GetAt(Natural.Of(4)));
+
+    System.out.println("  > Riempio il gap simulando wrap");
+    vec.SetAt(4, Natural.Of(0));
+    vec.SetAt(5, Natural.Of(1));
+    assertEquals(4, vec.GetAt(Natural.Of(0)));
+    assertEquals(5, vec.GetAt(Natural.Of(1)));
+
+    System.out.println("  > ShiftLeft(0,2) per riallineare");
+    vec.ShiftLeft(Natural.Of(0), Natural.Of(2));
+    assertEquals(1, vec.GetAt(Natural.Of(0)));
+    assertEquals(2, vec.GetAt(Natural.Of(1)));
+    assertEquals(3, vec.GetAt(Natural.Of(2)));
+    assertNull(vec.GetAt(Natural.Of(3)));
+    assertNull(vec.GetAt(Natural.Of(4)));
+
+    vec.SetAt(6, Natural.Of(3));
+    vec.SetAt(7, Natural.Of(4));
+    assertEquals(6, vec.GetAt(Natural.Of(3)));
+    assertEquals(7, vec.GetAt(Natural.Of(4)));
+    System.out.println("[Structural] CircularVector ShiftWrapAround Passed!");
+  }
+
 }
