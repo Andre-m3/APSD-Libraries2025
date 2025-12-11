@@ -587,4 +587,72 @@ public class PersonalTest {
         System.out.println("Static CircularVector Passed!");
     }
 
+    // --------------------------------------------------------------------------
+    // 15. TEST MUTABILITÀ ITERATORE
+    // Verifica che SetCurrent modifichi davvero la struttura sottostante.
+    // --------------------------------------------------------------------------
+    @Test
+    void testIterator_Mutability() {
+        System.out.println("[Personal] Testing Iterator SetCurrent...");
+        
+        LLList<Integer> list = new LLList<>();
+        list.InsertLast(10);
+        list.InsertLast(20);
+        list.InsertLast(30); // [10, 20, 30]
+        
+        // Ottengo iteratore
+        apsd.interfaces.containers.iterators.MutableForwardIterator<Integer> it = list.FIterator();
+        
+        // Avanzo al secondo elemento (20)
+        it.Next(); 
+        assertEquals(20, it.GetCurrent());
+        
+        // Modifico "al volo" tramite iteratore
+        it.SetCurrent(99);
+        
+        // Verifico che la lista sia cambiata permanentemente
+        assertEquals(99, list.GetAt(Natural.Of(1)), "List should be updated by iterator");
+        
+        // Verifico anche tramite GetLast per sicurezza
+        assertEquals(30, list.GetLast());
+        
+        System.out.println("Iterator Mutability Passed!");
+    }
+
+    // --------------------------------------------------------------------------
+    // 16. TEST INSIEMI DISGIUNTI (Operazioni Logiche)
+    // Verifica il comportamento su insiemi che non hanno elementi in comune.
+    // --------------------------------------------------------------------------
+    @Test
+    void testSets_DisjointOperations() {
+        System.out.println("[Personal] Testing Disjoint Sets Operations...");
+        
+        WSet<Integer> setA = new WSet<>();
+        setA.Insert(1); setA.Insert(2); // A = {1, 2}
+        
+        WSet<Integer> setB = new WSet<>();
+        setB.Insert(3); setB.Insert(4); // B = {3, 4}
+        
+        // INTERSEZIONE (A inter B) -> Deve essere vuoto
+        // Nota: Intersection modifica 'this' (setA)
+        // Per testare senza distruggere, usiamo copie o testiamo sequenzialmente.
+        
+        // Test Difference Disgiunta (A - B) -> Deve restare A
+        // {1, 2} - {3, 4} = {1, 2}
+        WSet<Integer> diffTest = new WSet<>(); 
+        diffTest.Insert(1); diffTest.Insert(2);
+        diffTest.Difference(setB);
+        assertEquals(Natural.Of(2), diffTest.Size());
+        assertTrue(diffTest.Exists(1));
+        assertTrue(diffTest.Exists(2));
+        
+        // Test Intersezione Disgiunta (A inter B) -> Vuoto
+        WSet<Integer> interTest = new WSet<>();
+        interTest.Insert(1); interTest.Insert(2);
+        interTest.Intersection(setB);
+        assertTrue(interTest.IsEmpty(), "Intersection of disjoint sets must be empty");
+        
+        System.out.println("Disjoint Sets Logic Passed!");
+    }
+
 }
