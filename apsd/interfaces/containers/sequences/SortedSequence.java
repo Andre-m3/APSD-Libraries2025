@@ -35,7 +35,6 @@ public interface SortedSequence<Data extends Comparable<? super Data>> extends S
         // Se l'elemento in mezzo è null, e viene cercato null, abbiamo trovato una corrispondenza potenziale.
         // Ma siccome il compareTo non fornisce risultati corretti quando confrontato un null (es.: null.compareTo(10))
         // Allora delego alla ricerca lineare (più lenta! Però avverrà raramente) se troviamo un null.
-        /** DA RICONTROLLARE: Noi siamo sicuri di non avere mai Sorted Sequences con null? E quindi di non inciampare mai in questo caso? */
         return Sequence.super.Search(val);
       }
       cmp = midVal.compareTo(val);

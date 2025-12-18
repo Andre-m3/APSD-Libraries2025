@@ -12,7 +12,7 @@ public interface RemovableContainer<Data> extends Container {
     /** Questa sintassi serve a dire "Per ogni elemento di questo 'container', esegui il metodo Remove"
       * Se anche un solo elemento fallisce (non viene rimosso) viene restituito false
       * Se la traverse conclude senza problemi (abbiamo rimosso tutti gli elementi) restituisce true! 
-      * È analoga alla lambda vista in lezione, però come preferenza personale ritengo questa più "facile" da leggere se breve.
+      * È analoga alla lambda vista in lezione, però come preferenza personale ritengo questa più "facile" da leggere SE BREVE!
       */
   }
 

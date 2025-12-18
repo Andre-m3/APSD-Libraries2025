@@ -15,7 +15,7 @@ public interface ReallocableContainer extends ClearableContainer, Reallocable{
   // Grow
   default void Grow() {
     Realloc(Natural.Of((long) (Capacity().ToLong() * GROW_FACTOR)));
-  }   // **** Se dim è 0? dovrei verificare questa condizione? Controllare in futuro!
+  }
   default void Grow(Natural dim){
     Realloc(Natural.Of(Capacity().ToLong() + dim.ToLong()));
   }
